@@ -19,8 +19,7 @@ import sys
 import os
 
 ## Directories where CSVs and SQL files are stored ###
-csv_dir     = "/Users/Zach/data_science/med_school_data/csvs/"
-sql_dir     = "/Users/Zach/data_science/med_school_data/sql/"
+data_dir     = "/Users/Zach/data_science/med_school_data/data/"
 
 # get current directory #
 wd = os.getcwd()
@@ -29,8 +28,8 @@ wd = os.getcwd()
 mod_dir     = wd + '/../custom_modules/'
 
 # Create file path
-db_raw     = sql_dir + "medschool_raw.sqlite"
-db_cleaned = sql_dir + "medschool_cleaned.sqlite"
+db_raw     = data_dir + "medschool_raw.sqlite"
+db_cleaned = data_dir + "medschool_cleaned.sqlite"
 
 # Change directories to where my custom mod is stored
 sys.path.insert(0, mod_dir)
@@ -41,13 +40,13 @@ import cleaning_helpers as helpers
 
 # Create a Dictionary of file path and name strings #
 table_dict = {
-   "academic_history"      : csv_dir + "Academic_History_Anonymized.csv",                        
-   "academic_progress"     : csv_dir + "Academic_Progress_Anonymized.csv",
-   "grades"                : csv_dir + "Grades_Anonymized.csv",
-   "honors_highpass"       : csv_dir + "Honors_HighPass_Anonymized.csv",
-   "leave_of_abs"          : csv_dir + "Leave_of_Absence_Anonymized.csv",
-   "shelf_exams"           : csv_dir + "Shelf_exams_Anonymized.csv",
-   "USMLE_scores"          : csv_dir + "USMLE_Scores_Anonymized.csv",
+   "academic_history"      : data_dir + "Academic_History_Anonymized.csv",                        
+   "academic_progress"     : data_dir + "Academic_Progress_Anonymized.csv",
+   "grades"                : data_dir + "Grades_Anonymized.csv",
+   "honors_highpass"       : data_dir + "Honors_HighPass_Anonymized.csv",
+   "leave_of_abs"          : data_dir + "Leave_of_Absence_Anonymized.csv",
+   "shelf_exams"           : data_dir + "Shelf_exams_Anonymized.csv",
+   "USMLE_scores"          : data_dir + "USMLE_Scores_Anonymized.csv",
 }
 
 

@@ -12,15 +12,15 @@ mod_dir     = wd + '/../custom_modules/'
 sys.path.insert(0, mod_dir)
 
 ## Directories where SQL files are stored ###
-sql_dir     = "/Users/Zach/data_science/med_school_data/sql/"
+data_dir     = "/Users/Zach/data_science/med_school_data/data/"
 res_dir			= wd + '/../../results/'
 
 # Import Custom Module
 import cleaning_helpers as helpers
 
 # Create file path
-db_raw     = sql_dir + "medschool_raw.sqlite"
-db_cleaned = sql_dir + "medschool_cleaned.sqlite"
+db_raw     = data_dir + "medschool_raw.sqlite"
+db_cleaned = data_dir + "medschool_cleaned.sqlite"
 
 # Write the Query #
 mcat_dict = {

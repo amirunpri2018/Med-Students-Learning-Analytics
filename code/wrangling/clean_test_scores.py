@@ -15,7 +15,7 @@ import sys
 import os
 
 ## Directories SQL files are stored ###
-sql_dir     = "/Users/Zach/data_science/med_school_data/sql/"
+data_dir     = "/Users/Zach/data_science/med_school_data/data/"
 
 # get current directory #
 wd = os.getcwd()
@@ -24,8 +24,8 @@ wd = os.getcwd()
 mod_dir     = wd + '/../custom_modules/'
 
 # Create file path
-db_raw     = sql_dir + "medschool_raw.sqlite"
-db_cleaned = sql_dir + "medschool_cleaned.sqlite"
+db_raw     = data_dir + "medschool_raw.sqlite"
+db_cleaned = data_dir + "medschool_cleaned.sqlite"
 
 # Change directories to where my custom mod is stored
 sys.path.insert(0, mod_dir)
