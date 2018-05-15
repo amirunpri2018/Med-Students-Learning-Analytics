@@ -4,7 +4,6 @@
 # Desc   : Write a class of functions to clean data         #
 #############################################################
 
-
 import pandas   as pd
 import sqlite3  as sql
 import numpy    as np
@@ -23,11 +22,14 @@ def read_csv(filepath, data_types):
 # Function 2 : function to clean a column name  #
 #-----------------------------------------------#
 
-def rename_columns(df):
-  df.columns = map(str.lower, df.columns)
-  df.columns = df.columns.str.replace(' ', '_')
-  df.columns = df.columns.str.replace('.', '_')
-  return df
+def rename_columns(df, strings = [' ', '.', ','], rep = [], low = True):
+	if len(rep) == 0:
+		rep = ['_', '_', '_']
+	if low == True:
+		df.columns = map(str.lower, df.columns)
+	for idx, string in enumerate(strings):
+		df.columns = df.columns.str.replace(string, rep[idx])
+	return df
 
 
 #-----------------------------------------------#
@@ -68,7 +70,6 @@ def find_format_dates(df):
 
 # Look through every entry of every column of a df #
 # Decide if the column contains only numeric entries #
-
 
 def format_numbers(df):
   for col in df.columns:
@@ -151,7 +152,7 @@ def add_suffix(df, suffix, condition):
 
 
 #--------------------------------------------------------#
-# Function 10 : Add a suffix to column names              #
+# Function 11 : Pull a full dataset                      #
 #--------------------------------------------------------#
 
 def pull_full_datasets(table, dbname):
@@ -161,6 +162,52 @@ def pull_full_datasets(table, dbname):
   cur.close()
   print("Sucessfully pulled: [" + table + "]")
   return df
+
+
+#--------------------------------------------------------#
+# Function 12 : Pull a full dataset                      #
+#--------------------------------------------------------#
+def query_dataset(dbname, query):
+  con = sql.connect(dbname)
+  cur = con.cursor()
+  df = pd.read_sql(query, con)
+  cur.close()
+  print("\nQuery Successful")
+  return df
+
+
+
+#--------------------------------------------------------#
+# Function 13 : Create a Zscore                          #
+#--------------------------------------------------------#
+
+def yearly_zscore(df, columns, keep):
+  for c in columns:
+    df[c + '_mean'] = df.groupby('year')[c].transform('mean')
+    df[c + '_std']  = df.groupby('year')[c].transform('std')
+    df[c + '_z']    = (df[c] - df[c + '_mean'])/(df[c + '_std'])
+    if keep == False:
+      df = df.drop([c + '_mean', c + '_std'], 1)
+  return df
+
+
+#--------------------------------------------------------#
+# Function 14 : drop strings from column                 #
+#--------------------------------------------------------#
+
+def replace_strings(df, columns, string, replacement):
+  for c in columns:
+    df[c].replace(string, replacement, regex = True, inplace = True)
+  return df
+
+
+
+
+
+
+
+
+
 
 
 

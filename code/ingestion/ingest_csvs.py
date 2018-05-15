@@ -21,6 +21,7 @@ import os
 ## Directories where CSVs and SQL files are stored ###
 data_dir     = "/Users/Zach/data_science/med_school_data/data/"
 
+ 
 # get current directory #
 wd = os.getcwd()
 
@@ -34,19 +35,23 @@ db_cleaned = data_dir + "medschool_cleaned.sqlite"
 # Change directories to where my custom mod is stored
 sys.path.insert(0, mod_dir)
 
-# Import Custom Module
-import cleaning_helpers as helpers
-
 
 # Create a Dictionary of file path and name strings #
 table_dict = {
-   "academic_history"      : data_dir + "Academic_History_Anonymized.csv",                        
+   "academic_history"      : data_dir + "Academic_History_Anonymized.csv",
    "academic_progress"     : data_dir + "Academic_Progress_Anonymized.csv",
    "grades"                : data_dir + "Grades_Anonymized.csv",
    "honors_highpass"       : data_dir + "Honors_HighPass_Anonymized.csv",
    "leave_of_abs"          : data_dir + "Leave_of_Absence_Anonymized.csv",
    "shelf_exams"           : data_dir + "Shelf_exams_Anonymized.csv",
    "USMLE_scores"          : data_dir + "USMLE_Scores_Anonymized.csv",
+   'MCAT_post_2015'        : data_dir + 'M1_Roster_MCAT_After2015.csv',
+   'MCAT_pre_2015'         : data_dir + 'M1_Roster_MCAT_Before2015.csv',
+   'rosters'               : data_dir + 'Rosters_Anonymized.csv',
+   'scale'                 : data_dir + 'Grades_Scale.csv',
+   'degrees'               : data_dir + 'Degrees_Anonymized.csv',
+   'gems'                  : data_dir + 'GEMS_Anonymized.csv',
+   'race_ethnicity'        : data_dir + 'Race_Ethnicity_Anonymized.csv'
 }
 
 
@@ -83,6 +88,7 @@ for name in table_dict.keys():
   df = globals()[name]
   globals()[name] = helpers.format_numbers(df)
 
+
 #-------------------------------------------------#
 # Step 4: Drop columns with no unique data
 #--------------------------------------------------#
@@ -101,6 +107,4 @@ for name in table_dict.keys():
 ## Push all of the dfs to sqlite ##
 for file in table_dict.keys():
   helpers.push_to_sql(df = globals()[file], sql_name = file, dbname = db_raw)
-
-
 
