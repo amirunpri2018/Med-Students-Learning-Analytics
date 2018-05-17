@@ -35,6 +35,8 @@ db_cleaned = data_dir + "medschool_cleaned.sqlite"
 # Change directories to where my custom mod is stored
 sys.path.insert(0, mod_dir)
 
+import cleaning_helpers as helpers
+
 
 # Create a Dictionary of file path and name strings #
 table_dict = {
@@ -51,6 +53,7 @@ table_dict = {
    'scale'                 : data_dir + 'Grades_Scale.csv',
    'degrees'               : data_dir + 'Degrees_Anonymized.csv',
    'gems'                  : data_dir + 'GEMS_Anonymized.csv',
+   'gender'                : data_dir + 'Gender_Anonymized.csv',
    'race_ethnicity'        : data_dir + 'Race_Ethnicity_Anonymized.csv'
 }
 

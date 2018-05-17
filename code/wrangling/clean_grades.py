@@ -39,6 +39,7 @@ db_cleaned = data_dir + "medschool_cleaned.sqlite"
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 
+
 ######################################################################
 # Pull in M1 students from academic history and create a column for  #
 # their spring and fall semesters                                    #
@@ -135,8 +136,6 @@ scale_query = '''
 scale = helpers.query_dataset(db_raw, scale_query).reset_index(drop = True)
 scale.drop(['explanation','years','index'], 1, inplace = True)
 
-
-
 ###############################################
 # Merge to get Fall Grades for M1 students    #
 ###############################################
@@ -154,14 +153,14 @@ grades.loc[grades['season'] == 'spring_m1','course'] = 'M1S_' + grades.course
 grades.loc[grades['season'] == 'spring_m2','course'] = 'M2S_' + grades.course
 
 
-# Reshape the data from long to wide #
-grades_wide = grades.pivot_table(index=['person_uid_anon'],
-                                     columns='course', 
-                                     values='num__scale',
-                                     aggfunc='first')
-
+# Keep First entry per student-course #
+# The reshape command was barfing because sometimes a student 
+# Was said to take the same course in the same season
+sort_list = ['person_uid_anon', 'course', 'academic_period']
+group_list= ['person_uid_anon', 'course']
+grades = grades.sort_values(sort_list, ascending=True).groupby(group_list, as_index=False).first()
+grades_wide = grades.pivot(index = 'person_uid_anon', columns = 'course')['num__scale']
 grades_wide.reset_index(inplace = True)
-
 
 # Merge the fall m1 semester back in so that we know when they started
 m1_fall     = roster[['person_uid_anon', 'fall_m1']]
@@ -172,26 +171,63 @@ cols = grades_wide.columns.tolist()
 cols = cols[-1:] + cols[:-1]
 grades_wide = grades_wide[cols]
 grades_wide.sort_values(by = 'fall_m1', ascending = True, inplace = True)
+
 grades_wide = helpers.rename_columns(grades_wide, strings = [' ', '.', '/', '&', ',', '-'],
                                                   rep = ['_', '_', '_', 'and', '', '_'])
 
+
+# Create a list of courses to keep (provided by Marcio) #
+courses = [
+  "limbs",
+  "metabolism_nutrition_and_endo",
+  "molecular_and_cell_physiology",
+  "molecular_and_human_genetics",
+  "cardio_pulmonary",
+  "ebm_and_population_health",
+  "gastrointestinal",
+  "head_neck_and_special_senses",
+  "medical_neuroscience",
+  "patients_populations_and_policy",
+  "physical_diagnosis_i",
+  "renal_and_electrolytes",
+  "sexual_dev__and_reproduction",
+  "clinical_skills_primer",
+  "evidence_based_medicine_ii",
+  "health_care_ethics",
+  "human_sexuality",
+  "lab_medicine_pblm_solving_case",
+  "microbiology_and_immunology",
+  "pathology",
+  "pharmacology",
+  "physical_diagnosis_ii",
+  "psychiatry"
+  ]
+
+# Write a function to extend the prefix to each course #
+def add_prefixes(master_list, prefix_list):
+  new_list = []
+  for m in master_list:
+    for p in prefix_list:
+      new = p + m
+      new_list.append(new)
+  return(new_list)
+
+# Extend the list to include all prefixes #
+courses = add_prefixes(courses, ['m1f_', 'm1s_', 'm2f_', 'm2s_'])
+
+
+# Drop column if it's not in the course list.
+courses.append('fall_m1')
+courses.append('person_uid_anon')
+for c in grades_wide.columns:
+  if (c not in courses):
+    grades_wide.drop([c],1,inplace =True)
 
 # Push the data to SQL #
 helpers.push_to_sql(grades_wide, 'grades_wide', db_cleaned)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+grades_wide.head()
 
 
 

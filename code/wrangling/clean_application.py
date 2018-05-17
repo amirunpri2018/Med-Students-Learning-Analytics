@@ -179,10 +179,8 @@ race.rename(columns = {'primary_ethnicity_desc' : 'race',
 # pull in Gender data   #
 #########################
 
-gender = helpers.pull_full_datasets('academic_history', db_raw)
-gender = gender[['person_uid_anon', 'gender']].drop_duplicates()
-
-
+gender_query = 'select distinct gender, person_uid_anonym as person_uid_anon from gender';
+gender = helpers.query_dataset(db_raw, gender_query).drop(['index', 1])
 
 ###########################################################
 # Combine the tables together into one application table  # 
