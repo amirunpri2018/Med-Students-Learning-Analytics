@@ -65,7 +65,7 @@ query = '''
                   c.gender,
 								  a.*,
                   d.score_num as step1_raw_score,
-                  d.score_num as step1_z_score,
+                  d.score_num_z as step1_z_score,
                   d.pass_indicator as step1_pass_indicator,
                   d.total_attempts as step1_total_attempts
                FROM grades_wide as a
@@ -79,6 +79,11 @@ query = '''
 
 
 master = helpers.query_dataset(db_cleaned,query).drop(['index', 'person_uid_anon', 'fall_m1'], 1)
+
+
+
+
+
 
 master.to_csv(data_dir + '/../output/master.csv', index = False)
 

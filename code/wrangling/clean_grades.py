@@ -223,11 +223,21 @@ for c in grades_wide.columns:
   if (c not in courses):
     grades_wide.drop([c],1,inplace =True)
 
+
+# Drop column if it's not heavily populated ##
+def drop_sparse(df):
+	for c in df.columns:
+		if df[c].count() < 100 :
+			df.drop(c, 1, inplace = True)
+	return df
+
+grades_wide = drop_sparse(grades_wide)
+
+
 # Push the data to SQL #
 helpers.push_to_sql(grades_wide, 'grades_wide', db_cleaned)
 
 
-grades_wide.head()
 
 
 
