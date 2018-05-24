@@ -54,7 +54,9 @@ table_dict = {
    'degrees'               : data_dir + 'Degrees_Anonymized.csv',
    'gems'                  : data_dir + 'GEMS_Anonymized.csv',
    'gender'                : data_dir + 'Gender_Anonymized.csv',
-   'race_ethnicity'        : data_dir + 'Race_Ethnicity_Anonymized.csv'
+   'race_ethnicity'        : data_dir + 'Race_Ethnicity_Anonymized.csv',
+   'missing_students'      : data_dir + 'Missing_step1_Anonymized.csv',
+   'repeat' 					     : data_dir + 'repeat_anon.csv'
 }
 
 

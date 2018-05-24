@@ -81,10 +81,47 @@ query = '''
 master = helpers.query_dataset(db_cleaned,query).drop(['index', 'person_uid_anon', 'fall_m1'], 1)
 
 
+###########################################
+### Add in dropout indicator from Marcio ##
+###########################################
+
+dropout = helpers.query_dataset(db_raw, 'select person_uid_anony from missing_students')
+dropout['dropout_indic'] = 1
+
+output = pd.merge(master, dropout, left_on = 'student_id',
+							right_on = 'person_uid_anony', how = 'left')
+
+output.drop('person_uid_anony', 1, inplace = True)
+
+###########################################
+### Add repeat indicator from Marcio 		 ##
+###########################################
+
+repeat = helpers.query_dataset(db_raw, 'select * from repeat')
+repeat = repeat[['person_uid', 'student_classification']]
+repeat['repeat_indic'] = 1
+
+output = pd.merge(output, repeat, left_on = 'student_id',
+							right_on = 'person_uid', how = 'left')
+
+output.drop('person_uid', 1, inplace = True)
+
+
+
+#output.step1_pass_indicator = output.step1_pass_indicator.astype(bool)
+#output.dropout_indic = output.dropout_indic.astype(bool)
+#output.repeat_indic = output.repeat_indic.astype(bool)
+
+output['target_indicator'] = np.where((output.step1_pass_indicator == 0.0) | (output.dropout_indic == 1.0) | (output.repeat_indic == 1.0) , 1, 0)
+
+
+##################################
+### Change target based on this ##
+##################################
 
 
 
 
-master.to_csv(data_dir + '/../output/master.csv', index = False)
+output.to_csv(data_dir + '/../output/master.csv', index = False)
 
 
