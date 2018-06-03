@@ -56,16 +56,15 @@ table_dict = {
    'gender'                : data_dir + 'Gender_Anonymized.csv',
    'race_ethnicity'        : data_dir + 'Race_Ethnicity_Anonymized.csv',
    'missing_students'      : data_dir + 'Missing_step1_Anonymized.csv',
-   'repeat' 					     : data_dir + 'repeat_anon.csv'
+   'repeat' 					     : data_dir + 'repeat_anon.csv',
+   'biochem'					     : data_dir + 'Degrees_List.csv'
 }
-
 
 ###########################################
 #  Execute the functions for each csv     #
 # These functions were written by me and  #
 # Are stored in "cleaning_helpers.py"     #
 ###########################################
-
 
 #---------------------------------------#
 # Step 1: Read in all the CSVs at once
