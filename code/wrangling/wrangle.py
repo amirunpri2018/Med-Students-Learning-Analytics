@@ -1,4 +1,3 @@
-
 ###############################################################################
 # Author : Zach Fernandes                                                    	#
 # Updated: 6/3/18																											      	#
@@ -12,8 +11,9 @@
 #						 Part 2 - Clean MCAT data																					#
 #						 Part 3 - Clean Step 1 data																				#
 #					   Part 4 - Clean Grade data																				#
-#						 Part 5 - Combine all of the new datasets into one usable					#
-#											CSV that can be used for machine learning								#
+#						 Part 5 - Combine all of the new datasets into one 								#
+#						 Part 6 - Make final adjustments and export to a CSV that can			#
+#											be used for machine learning.														# 
 ###############################################################################
 
 # Import Packagaes #
@@ -189,7 +189,6 @@ gems = gems[['person_uid_anon', 'gem_indicator']].drop_duplicates().reset_index(
 # Pull in the race data	   #
 ############################
 
-
 ## Pull everything from SQL ##
 race_query = ''' SELECT * from race_ethnicity
               ;
@@ -200,6 +199,22 @@ race = helpers.query_dataset(db_raw,race_query).drop(['index'], 1,)
 race = race[['person_uid_anon', 'primary_ethnicity_desc', 'prim_ethnicity_category']]
 race.rename(columns = {'primary_ethnicity_desc' : 'race', 
                        'prim_ethnicity_category': 'race_indic'}, inplace = True)
+
+
+###############################
+### Pull in dropout indicator #
+###############################
+drop_query = '''select person_uid_anony as person_uid_anon from missing_students'''
+dropout = helpers.query_dataset(db_raw, drop_query)
+dropout.drop_duplicates(inplace = True)
+dropout['dropout_indic'] = 1
+
+#############################
+### Add repeat indicator	 ##
+#############################
+repeat = helpers.query_dataset(db_raw, 'select person_uid as person_uid_anon from repeat')
+repeat.drop_duplicates(inplace = True)
+repeat['repeat_indic'] = 1
 
 
 #########################
@@ -223,13 +238,23 @@ major_biochem = tmp.reset_index()
 # Combine the tables together into one application table  # 
 ###########################################################
 
-application = pd.merge(bachelors_wide, masters_wide, on = 'person_uid_anon', how = 'outer')
-application = pd.merge(application, associates_wide, on = 'person_uid_anon', how = 'outer')
-application = pd.merge(application, gems,            on = 'person_uid_anon', how = 'outer')
-application = pd.merge(application, race,            on = 'person_uid_anon', how = 'outer')
-application = pd.merge(application, gender,          on = 'person_uid_anon', how = 'outer')
-application = pd.merge(application, major_biochem,	 on = 'person_uid_anon', how = 'outer')
-application.gem_indicator.fillna(0, inplace = True)
+def merge_loop(base, df_list, onvar, jointype):
+	output = base
+	for df in df_list:
+		output = pd.merge(output, df, on = onvar, how = jointype)
+	return output	
+
+app_dfs = [masters_wide, associates_wide, gems, race, gender,
+	major_biochem, repeat, dropout]
+	
+application = merge_loop(bachelors_wide, app_dfs, 'person_uid_anon', 'outer')
+
+def fill_nas(df, cols, fill):
+	for c in cols:
+		df[c].fillna(fill, inplace = True)
+	return df
+
+application = fill_nas(application, ['gem_indicator', 'repeat_indic', 'dropout_indic'], 0)
 
 
 #####################################
@@ -631,7 +656,7 @@ helpers.push_to_sql(grades_wide, 'grades_wide', db_cleaned)
 
 #============================================================#
 #------------------------------------------------------------#
-#----------- Part Five - Compile Master Datase---------------#
+#----------- Part Five - Compile Master Dataset--------------#
 #------------------------------------------------------------#
 #============================================================#
 
@@ -663,6 +688,8 @@ query = '''
                   d.score_num as step1_raw_score,
                   d.score_num_z as step1_z_score,
                   d.pass_indicator as step1_pass_indicator,
+									c.repeat_indic,
+									c.dropout_indic,
                   d.total_attempts as step1_total_attempts
                FROM grades_wide as a
                LEFT JOIN mcat as b
@@ -676,46 +703,43 @@ query = '''
 
 master = helpers.query_dataset(db_cleaned,query).drop(['index', 'person_uid_anon', 'fall_m1'], 1)
 
+#============================================================#
+#------------------------------------------------------------#
+#----------- Part Six Final adjustments / output ------------#
+#------------------------------------------------------------#
+#============================================================#
 
-###########################################
-### Add in dropout indicator from Marcio ##
-###########################################
+print('\n\n--------------------------------')
+print('PART SIX: Final Adjustments / Export')
+print('--------------------------------')
 
-dropout = helpers.query_dataset(db_raw, 'select person_uid_anony from missing_students')
-dropout['dropout_indic'] = 1
+## Create a target indicator ##
+master['target_indicator'] = np.where((master.step1_pass_indicator == 0.0) | 
+					(master.dropout_indic == 1.0) | 
+					(master.repeat_indic == 1.0) , 1, 0)
 
-output = pd.merge(master, dropout, left_on = 'student_id',
-							right_on = 'person_uid_anony', how = 'left')
+## Encode degrees ##
+master['double_bachelor']			= np.where(pd.notnull(master['bachelor_2']), 1, 0)
+master['master_degree'] 			= np.where(pd.notnull(master['master_1']), 1, 0)
+master['double_master'] 			= np.where(pd.notnull(master['master_2']), 1, 0)
+master['associate_degree'] 		= np.where(pd.notnull(master['associate_1']), 1, 0)
 
-output.drop('person_uid_anony', 1, inplace = True)
+## Flag Science degrees ##
+master['science_undergrad'] = np.where((master['bachelor_1'] == 'Science') | 
+		(master['bachelor_2'] == 'Science') |
+		(master['bachelor_3'] == 'Science'), 1, 0)
 
-
-###########################################
-### Add repeat indicator from Marcio 		 ##
-###########################################
-
-repeat = helpers.query_dataset(db_raw, 'select * from repeat')
-repeat = repeat[['person_uid', 'student_classification']]
-repeat['repeat_indic'] = 1
-
-output = pd.merge(output, repeat, left_on = 'student_id',
-							right_on = 'person_uid', how = 'left')
-
-output.drop(['person_uid', 'student_classification'], 1, inplace = True)
-
-
-output['target_indicator'] = np.where((output.step1_pass_indicator == 0.0) | 
-					(output.dropout_indic == 1.0) | 
-					(output.repeat_indic == 1.0) , 1, 0)
+master['science_master'] = np.where((master['master_1'] == 'Science') | 
+		(master['master_2'] == 'Science') |
+		(master['master_3'] == 'Science'), 1, 0)
 
 
 ##################################
 ### Change target based on this ##
 ##################################
 
-output.to_csv(data_dir + '/../output/master.csv', index = False)
-
-
+master.to_csv(data_dir + '/../output/master.csv', index = False)
+print('\n\nWrangling Complete!')
 
 
 
