@@ -1,0 +1,50 @@
+Med School Learning Analytics Project
+
+Data dictionary for file master.csv
+
+Student_id (INT) – Student identification anonymized
+m1_fall (VARCHAR) – year the students started med school at fall semester (*30)
+mcat_zscore (FLOAT) – Z score for the MCAT score for students admitted in the same year. MCAT is the national exam students take as part of the med school admission process.
+mcat_total_attempts (INT) – Number of MCAT attempts
+bachelor_1(VARCHAR) – First Bachelor’s degree achieved in college (Science, Arts or Other)
+bachelor_2 (VARCHAR) – Second Bachelor’s degree achieved in college (Science, Arts or Other)
+bachelor_3 (VARCHAR) – Third Bachelor’s degree achieved in college (Science, Arts or Other)
+master_1 (VARCHAR) – First Master’s degree achieved in graduate school (Science, Arts or Other)
+master_2 (VARCHAR) – Second Master’s degree achieved in graduate school (Science, Arts or Other)
+master_3 (VARCHAR) – Third Master’s degree achieved in graduate school (Science, Arts or Other)
+associate_1 (VARCHAR) – Associate degree achieved  (Science, Arts or Other)
+associate_2(VARCHAR) – Associate degree achieved  (Science, Arts or Other)
+gem_indicator(INT) – Indicator of the students was admitted to med school through the GEMS program (1) or not (2).
+Race (VARCHAR) – Race as declared by the student
+race_indic (INT) - Race code as declared by the student
+gender(VARCHAR) – gender as declared by the student
+m1f_limbs (FLOAT) – Grade for the course LIMBS in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1f_metabolism_nutrition_and_endo(FLOAT) – Grade for the course METABOLISM, NUTRITION AND ENDOCRINOLOGY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1f_molecular_and_cell_physiology(FLOAT) – Grade for the course MOLECULAR AND CELL PHYSIOLOGY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1f_molecular_and_human_genetics(FLOAT) – Grade for the course MOLECULAR AND HUMAN GENETICS in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_cardio_pulmonary(FLOAT) – Grade for the course CARDIOPULMONARY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_ebm_and_population_health(FLOAT) – Grade for the course EVIDENCE BASED MEDICINE AND POPULATION HEALTH in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_gastrointestinal(FLOAT) – Grade for the course GASTROINTESTINAL in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_head_neck_and_special_senses (FLOAT) – Grade for the course HEAD, NECK AND SPECIAL SENSES in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_medical_neuroscience(FLOAT) – Grade for the course MEDIC NEUROSCIENCE in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_patients_populations_and_policy(FLOAT) – Grade for the course PATIENTS, POPULATION AND POLICY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_physical_diagnosis_i (FLOAT) – Grade for the course PHYSICAL DIAGNOSIS 1 in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_renal_and_electrolytes (FLOAT) – Grade for the course RENAL AND ELECTRLYTES in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m1s_sexual_dev__and_reproduction(FLOAT) – Grade for the course SEXUAL DEVELOPMENT AND REPRODUCTION in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_clinical_skills_primer (FLOAT) – Grade for the course CLINICAL SKILLS in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_evidence_based_medicine_ii (FLOAT) – Grade for the course EVIDENCE BASED MEDICINE in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_health_care_ethics(FLOAT) – Grade for the course HELTH CARE ETHICS in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_human_sexuality - (FLOAT) – Grade for the course HUMAN SEXUALITY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_lab_medicine_pblm_solving_case (FLOAT) – Grade for the course MEDICINE PROBLEM SOLVING in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_microbiology_and_immunology (FLOAT) – Grade for the course MICROBIOLOGY AND IMMUNOLOGY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_pathology (FLOAT) – Grade for the course PATHOLOGY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_pharmacology(FLOAT) – Grade for the course PHARMACOLOGY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_physical_diagnosis_ii (FLOAT) – Grade for the course PHYSICAL DIAGNOSIS in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+m2s_psychiatry - (FLOAT) – Grade for the course PSYCHIATRY in year 1 (Scale: 4= Honors, 3= High Pass, 2=Low Pass, 1= Pass, 0.5=Pass after remediation, 0=Fail)
+step1_raw_score (INT)– Score of the Step 1 first attempt
+step1_z_score (FLOAT) – Zscore for the step1 first attempt for students in the same year
+step1_pass_indicator (INT) – Step1 pass (1) or fail (0) indicator
+step1_total_attempts(INT) – Number of attempts for Step1 
+dropout_indic (INT) – Indicates if the students dropped out from med school (1) or not (0)
+repeat_indic (INT) – Indicates if the students repeated a year in school (1) or not (0)
+target_indicator (INT) – indicates if the students is in the target group (1) or not (0). To be in the target group the student needs to have to met at least one of these 3 conditions: Failed step1, dropped out or repeated a year.
