@@ -12,8 +12,9 @@
 #						 Part 3 - Clean Step 1 data																				#
 #					   Part 4 - Clean Grade data																				#
 #						 Part 5 - Combine all of the new datasets into one 								#
-#						 Part 6 - Make final adjustments and export to a CSV that can			#
-#											be used for machine learning.														# 
+#						 Part 6 - Make final adjustments and export a master SQLite file	#
+#											that will then be further explored / wrangled by Kathryn#
+#											in a jupyter notebook																		#
 ###############################################################################
 
 # Import Packagaes #
@@ -703,6 +704,8 @@ query = '''
 
 master = helpers.query_dataset(db_cleaned,query).drop(['index', 'person_uid_anon', 'fall_m1'], 1)
 
+
+
 #============================================================#
 #------------------------------------------------------------#
 #----------- Part Six Final adjustments / output ------------#
@@ -738,10 +741,53 @@ master['science_master'] = np.where((master['master_1'] == 'Science') |
 ### Change target based on this ##
 ##################################
 
-master.to_csv(data_dir + '/../output/master.csv', index = False)
+
+
+numeric_list = [
+'m1_fall',
+'mcat_zscore',                         
+'mcat_total_attempts',                 
+'biochem_likelyhood',                  
+'gem_indicator',                       
+'race_indic',                          
+'m1f_limbs',
+'m1f_metabolism_nutrition_and_endo',
+'m1f_molecular_and_cell_physiology',
+'m1f_molecular_and_human_genetics',
+'m1s_cardio_pulmonary',
+'m1s_ebm_and_population_health',
+'m1s_gastrointestinal',
+'m1s_head_neck_and_special_senses',
+'m1s_patients_populations_and_policy',
+'m1s_physical_diagnosis_i',
+'m1s_renal_and_electrolytes',
+'m1s_sexual_dev__and_reproduction',
+'m2s_clinical_skills_primer',
+'m2s_evidence_based_medicine_ii',
+'m2s_health_care_ethics',
+'m2s_human_sexuality',
+'m2s_lab_medicine_pblm_solving_case',
+'m2s_microbiology_and_immunology',
+'m2s_pathology',
+'m2s_pharmacology',
+'m2s_physical_diagnosis_ii',
+'m2s_psychiatry',
+'step1_raw_score',                     
+'step1_z_score',                       
+'step1_pass_indicator',                
+'repeat_indic',                        
+'dropout_indic',                       
+'step1_total_attempts'
+]
+
+
+for c in numeric_list:
+	master[c] = pd.to_numeric(master[c])
+
+
 print('\n\nWrangling Complete!')
 
 
-
+helpers.push_to_sql(master, 'master', db_cleaned)
 
 
