@@ -181,10 +181,10 @@ def query_dataset(dbname, query):
 # Function 13 : Create a Zscore                          #
 #--------------------------------------------------------#
 
-def yearly_zscore(df, columns, keep):
+def yearly_zscore(df, columns, keep, year_var = 'year'):
   for c in columns:
-    df[c + '_mean'] = df.groupby('year')[c].transform('mean')
-    df[c + '_std']  = df.groupby('year')[c].transform('std')
+    df[c + '_mean'] = df.groupby(year_var)[c].transform('mean')
+    df[c + '_std']  = df.groupby(year_var)[c].transform('std')
     df[c + '_z']    = (df[c] - df[c + '_mean'])/(df[c + '_std'])
     if keep == False:
       df = df.drop([c + '_mean', c + '_std'], 1)
