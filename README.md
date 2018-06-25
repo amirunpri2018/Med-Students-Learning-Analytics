@@ -22,33 +22,33 @@ This project has recieved contributions from 5 team members.
 
 1. /code/ingestion
 
-ingest_csvs.py - Reads in all of the student data CSVs, performs some initial transformations, pushes the data to SQLite
+- ingest_csvs.py - Reads in all of the student data CSVs, performs some initial transformations, pushes the data to SQLite
 
 2. /code/wrangling
 
-wrangle.py - Performs all major wrangling / merging, pushes the data to one master table in SQLite
+- wrangle.py - Performs all major wrangling / merging, pushes the data to one master table in SQLite
 prepare_final.ipynb - Makes some final transformations based on visual analysis, outputs data for Machine Learning
 
 3. /code/exploratory_data_analysis
 
-Exploratory_Data_Analysis.ipynb - Creates some visuals / takes a first look at the data
+- Exploratory_Data_Analysis.ipynb - Creates some visuals / takes a first look at the data
 
 
 4. /code/machine_learning
 
-Feature_Selection.ipynb - Does some feature analysis in order to find the best features for machine learning
-Fail_Sample_ML.ipynb - Takes a looks at a small subset of the data (i.e. only students who have failed a class)
-FinalML.ipynb - The most relevant machine learning file (Our final product). Trains on certain years of data and predicts other years. 
-YellowBrick_ML.ipynb - Tries different iterations of different models. Uses a looped version of train_test_split
+- Feature_Selection.ipynb - Does some feature analysis in order to find the best features for machine learning
+- Fail_Sample_ML.ipynb - Takes a looks at a small subset of the data (i.e. only students who have failed a class)
+- FinalML.ipynb - The most relevant machine learning file (Our final product). Trains on certain years of data and predicts other years. 
+- YellowBrick_ML.ipynb - Tries different iterations of different models. Uses a looped version of train_test_split
 
 5. /code/custom/modules
 
-cleaning_helpers.py - A file of helper functions used throughout the data cleaning process
+- cleaning_helpers.py - A file of helper functions used throughout the data cleaning process
 
 
 6. /visuals
 
-Contains some of the pictures that were added to the PowerPoint Presentation on 6/30/18, as well as the presentation itself. 
+- Contains some of the pictures that were added to the PowerPoint Presentation on 6/30/18, as well as the presentation itself. 
 
 
 
