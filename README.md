@@ -20,9 +20,9 @@ This project has recieved contributions from 5 team members.
 
 ## FILES BY DIRECTORY
 
-1. /code/ingestion
+1. /code/initial_formatting
 
-- ingest_csvs.py - Reads in all of the student data CSVs, performs some initial transformations, pushes the data to SQLite
+- format.py - Reads in all of the student data CSVs, performs some initial transformations, pushes the data to SQLite
 
 2. /code/wrangling
 
