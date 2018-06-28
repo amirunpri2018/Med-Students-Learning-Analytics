@@ -45,8 +45,12 @@ prepare_final.ipynb - Makes some final transformations based on visual analysis,
 
 - cleaning_helpers.py - A file of helper functions used throughout the data cleaning process
 
+6. /code/statistical_analysis
 
-6. /visuals
+- Statistical_Analysis.ipynb - Does some statistical analysis / bootstrapping
+
+
+7. /visuals
 
 - Contains some of the pictures that were added to the PowerPoint Presentation on 6/30/18, as well as the presentation itself. 
 
